@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    volumes:
+      # En local: carpeta; en VM: disco persistente (e.g. /mnt/disks/ollama_data)
+      - /mnt/disks/ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 10s
+      retries: 40
+
+  seed-model:
+    image: curlimages/curl:8.10.1
+    container_name: seed-model
+    depends_on:
+      ollama:
+        condition: service_healthy
+    # Hace el pull vía API HTTP (no necesita que el CLI esté en este contenedor)
+    command: >
+      sh -c 'curl -sS -X POST http://ollama:11434/api/pull
+      -H "Content-Type: application/json"
+      -d "{\"name\":\"qwen3:4b\"}" && echo "Modelo qwen3:4b listo"'
+
+      sh -c 'curl -sS -X POST http://ollama:11434/api/pull
+      -H "Content-Type: application/json"
+      -d "{\"name\":\"qwen2.5:7b-instruct\"}" && echo "Modelo qwen2.5:7b-instruct listo"'
+    restart: "no"
+    # Comparte el mismo volumen para que el modelo quede persistido
+    volumes:
+      - ollama_data:/root/.ollam
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: code-analyzer
+    restart: unless-stopped
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - REPOS_DIR=/tmp/repos
+      - ANALYSIS_DIR=/tmp/analysis/
+      - GOOGLE_CLOUD_PROJECT=archiwise-472512
+      - CONFIG_FILE=config.ini
+      - SYNAPTIA_ENV=PROD
+    volumes:
+      - ./tmp_repos:/tmp/repos
+      - ./analysis:/app/analysis
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ollama
+
+volumes:
+  ollama_data:

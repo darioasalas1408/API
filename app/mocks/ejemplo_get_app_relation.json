@@ -1,0 +1,75 @@
+{
+  "app_id": "app_id",
+  "nodes": [
+    {
+      "id": "APP_BILLING",
+      "label": "Billing",
+      "type": "ApplicationComponent",
+      "domain": "Core",
+      "criticality": "high",
+      "metadata": {
+        "owner": "Equipo Core",
+        "tech_stack": ["Java", "PostgreSQL"]
+      }
+    },
+    {
+      "id": "APP_PORTAL",
+      "label": "Portal Web",
+      "type": "ApplicationComponent",
+      "domain": "Front",
+      "criticality": "medium",
+      "metadata": {
+        "owner": "Equipo Digital",
+        "tech_stack": ["React", "Node.js"]
+      }
+    },
+    {
+      "id": "APP_REPORTS",
+      "label": "Reportes",
+      "type": "ApplicationComponent",
+      "domain": "Analytics",
+      "criticality": "low",
+      "metadata": {
+        "owner": "Equipo BI",
+        "tech_stack": ["Python"]
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "REL_1",
+      "source": "APP_BILLING",
+      "target": "APP_PORTAL",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "REST",
+        "description": "Portal consulta facturación",
+        "latency_ms": 120
+      }
+    },
+    {
+      "id": "REL_2",
+      "source": "APP_BILLING",
+      "target": "APP_REPORTS",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "JDBC",
+        "description": "Reportes lee datos de billing nocturnamente",
+        "schedule": "batch_nightly"
+      }
+    },
+    {
+      "id": "REL_3",
+      "source": "APP_PORTAL",
+      "target": "APP_REPORTS",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "REST",
+        "description": "Portal dispara generación de reportes on-demand"
+      }
+    }
+  ]
+}

@@ -1,0 +1,236 @@
+swagger: "2.0"
+info:
+  title: Startia Functional Analysis API
+  description: API para solicitar y consultar análisis funcionales de repositorios de código.
+  version: "1.0.0"
+
+host: synaptia-api.ingenia.la
+basePath: /
+schemes:
+  - https
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /functional_analysis_request:
+    post:
+      summary: Solicitar análisis funcional de un repositorio Git
+      operationId: createFunctionalAnalysisRequest
+      parameters:
+        - in: header
+          name: X-git-user
+          type: string
+          required: false
+          description: Usuario Git para repositorios privados.
+        - in: header
+          name: X-git-pat
+          type: string
+          required: false
+          description: Personal Access Token (PAT) para repos privados.
+        - in: body
+          name: repo_data
+          required: true
+          schema:
+            $ref: "#/definitions/Repo"
+      responses:
+        "200":
+          description: Job creado y encolado para su procesamiento.
+          schema:
+            $ref: "#/definitions/APIResponse"
+        "500":
+          description: Error interno al procesar la solicitud.
+          schema:
+            $ref: "#/definitions/Error"
+
+  /functional_analysis_request/{job_id}:
+    get:
+      summary: Consultar estado o resultados de un análisis funcional
+      operationId: getFunctionalAnalysisRequest
+      parameters:
+        - in: path
+          name: job_id
+          required: true
+          type: string
+        - in: header
+          name: Content-Type
+          type: string
+          required: false
+          description: >
+            Usa "text/markdown" para obtener el resultado en Markdown. Cualquier otro valor (o ausente) devuelve JSON.
+      responses:
+        "200":
+          description: Estado del job o resultado consolidado.
+          schema:
+            $ref: "#/definitions/APIResponse"
+          examples:
+            application/json:
+              id: "uuid"
+              status: "completed"
+              progress: 1
+              result:
+                application_summary:
+                  application: "App name"
+                  description: "Descripción resumida"
+                  business_processes: []
+                  business_entities: []
+                detail: []
+            text/markdown: |
+              # Resumen Funcional de la Aplicación: App name
+              ## Descripción de la Aplicación
+              Texto...
+        "404":
+          description: Job o archivo Markdown no encontrado.
+          schema:
+            $ref: "#/definitions/Error"
+
+  /healthz:
+    get:
+      summary: Comprobar disponibilidad del servicio
+      operationId: healthCheck
+      responses:
+        "200":
+          description: Servicio operativo.
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: ok
+
+definitions:
+  RepoApp:
+    type: object
+    properties:
+      app_name:
+        type: string
+      sub_app:
+        $ref: "#/definitions/RepoApp"
+
+  Repo:
+    type: object
+    required:
+      - url
+      - branch
+    properties:
+      app:
+        $ref: "#/definitions/RepoApp"
+      app_id:
+        type: string
+        example: "application-1234"
+        optionally: true
+      url:
+        type: string
+        example: "https://github.com/org/repo.git"
+      branch:
+        type: string
+        example: "main"
+
+  FunctionalComponents:
+    type: object
+    properties:
+      name:
+        type: string
+      functional_description:
+        type: string
+      evidence:
+        type: string
+
+  BusinessProcesses:
+    type: object
+    properties:
+      process_name:
+        type: string
+      preconditions:
+        type: string
+      functional_flow:
+        type: string
+      postconditions:
+        type: string
+
+  BusinessEntities:
+    type: object
+    properties:
+      entity_name:
+        type: string
+      description:
+        type: string
+
+  ModuleDetail:
+    type: object
+    properties:
+      file:
+        type: string
+      doc_type:
+        type: string
+      functional_description:
+        type: string
+      internal_components_functional:
+        type: array
+        items:
+          $ref: "#/definitions/FunctionalComponents"
+      business_processes:
+        type: array
+        items:
+          $ref: "#/definitions/BusinessProcesses"
+      business_entities:
+        type: array
+        items:
+          $ref: "#/definitions/BusinessEntities"
+
+  SystemDetail:
+    type: object
+    properties:
+      application:
+        type: string
+      app_id:
+        type: string
+      description:
+        type: string
+      business_processes:
+        type: array
+        items:
+          $ref: "#/definitions/BusinessProcesses"
+      business_entities:
+        type: array
+        items:
+          $ref: "#/definitions/BusinessEntities"
+
+  AppResult:
+    type: object
+    properties:
+      detail:
+        type: array
+        items:
+          $ref: "#/definitions/ModuleDetail"
+      application_summary:
+        $ref: "#/definitions/SystemDetail"
+
+  APIResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+        example: queued
+      progress:
+        type: number
+        format: float
+        example: 0.25
+      result:
+        $ref: "#/definitions/AppResult"
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+
+  Error:
+    type: object
+    properties:
+      detail:
+        type: string

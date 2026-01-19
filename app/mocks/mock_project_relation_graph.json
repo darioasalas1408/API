@@ -1,0 +1,300 @@
+{
+  "project_id": "PRJ_PORTFOLIO_2026",
+  "nodes": [
+    {
+      "id": "PRJ_CORE_PLATFORM",
+      "label": "Core Platform Revamp",
+      "type": "Project",
+      "domain": "Core",
+      "criticality": "high",
+      "metadata": {
+        "owner": "Equipo Plataforma",
+        "tech_stack": [
+          "C#/.NET 8",
+          "PostgreSQL",
+          "Kafka"
+        ],
+        "status": "in_progress"
+      }
+    },
+    {
+      "id": "PRJ_BILLING_REWORK",
+      "label": "Billing Rework",
+      "type": "Project",
+      "domain": "Core",
+      "criticality": "high",
+      "metadata": {
+        "owner": "Equipo Core",
+        "tech_stack": [
+          "Java",
+          "PostgreSQL",
+          "Redis"
+        ],
+        "status": "in_progress"
+      }
+    },
+    {
+      "id": "PRJ_WEB_PORTAL_REDESIGN",
+      "label": "Rediseño Portal Web",
+      "type": "Project",
+      "domain": "Front",
+      "criticality": "medium",
+      "metadata": {
+        "owner": "Equipo Digital",
+        "tech_stack": [
+          "React",
+          "Node.js"
+        ],
+        "status": "planned"
+      }
+    },
+    {
+      "id": "PRJ_MOBILE_APP_REFRESH",
+      "label": "Mobile App Refresh",
+      "type": "Project",
+      "domain": "Mobile",
+      "criticality": "medium",
+      "metadata": {
+        "owner": "Equipo Mobile",
+        "tech_stack": [
+          "Flutter",
+          "Firebase"
+        ],
+        "status": "planned"
+      }
+    },
+    {
+      "id": "PRJ_DWH_ANALYTICS",
+      "label": "Data Warehouse & Analytics",
+      "type": "Project",
+      "domain": "Analytics",
+      "criticality": "high",
+      "metadata": {
+        "owner": "Equipo BI",
+        "tech_stack": [
+          "Python",
+          "dbt",
+          "Snowflake"
+        ],
+        "status": "in_progress"
+      }
+    },
+    {
+      "id": "PRJ_REPORTING_SUITE",
+      "label": "Reporting Suite Unification",
+      "type": "Project",
+      "domain": "Analytics",
+      "criticality": "low",
+      "metadata": {
+        "owner": "Equipo BI",
+        "tech_stack": [
+          "Python",
+          "FastAPI"
+        ],
+        "status": "planned"
+      }
+    },
+    {
+      "id": "PRJ_PAYMENTS_UPGRADE",
+      "label": "Upgrade Motor de Pagos",
+      "type": "Project",
+      "domain": "Payments",
+      "criticality": "high",
+      "metadata": {
+        "owner": "Equipo Payments",
+        "tech_stack": [
+          "Java",
+          "MySQL",
+          "Redis"
+        ],
+        "status": "at_risk"
+      }
+    },
+    {
+      "id": "PRJ_FRAUD_DETECTION",
+      "label": "Fraud Detection v2",
+      "type": "Project",
+      "domain": "Payments",
+      "criticality": "high",
+      "metadata": {
+        "owner": "Equipo Risk",
+        "tech_stack": [
+          "Python",
+          "Kafka",
+          "ClickHouse"
+        ],
+        "status": "planned"
+      }
+    },
+    {
+      "id": "PRJ_SSO_IDENTITY",
+      "label": "SSO & Identity",
+      "type": "Project",
+      "domain": "Security",
+      "criticality": "high",
+      "metadata": {
+        "owner": "Equipo Seguridad",
+        "tech_stack": [
+          "Keycloak",
+          "OpenID Connect"
+        ],
+        "status": "in_progress"
+      }
+    },
+    {
+      "id": "PRJ_DEVOPS_OBSERVABILITY",
+      "label": "Observability & DevOps",
+      "type": "Project",
+      "domain": "DevOps",
+      "criticality": "medium",
+      "metadata": {
+        "owner": "Equipo SRE",
+        "tech_stack": [
+          "OpenTelemetry",
+          "Prometheus",
+          "Grafana"
+        ],
+        "status": "in_progress"
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "REL_1",
+      "source": "PRJ_WEB_PORTAL_REDESIGN",
+      "target": "PRJ_CORE_PLATFORM",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "REST",
+        "description": "El portal depende de nuevos endpoints del Core",
+        "latency_ms": 140
+      }
+    },
+    {
+      "id": "REL_2",
+      "source": "PRJ_MOBILE_APP_REFRESH",
+      "target": "PRJ_CORE_PLATFORM",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "REST",
+        "description": "La app móvil consume autenticación y perfil del Core",
+        "latency_ms": 160
+      }
+    },
+    {
+      "id": "REL_3",
+      "source": "PRJ_CORE_PLATFORM",
+      "target": "PRJ_SSO_IDENTITY",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "OIDC",
+        "description": "El Core se integra con SSO para emisión/validación de tokens"
+      }
+    },
+    {
+      "id": "REL_4",
+      "source": "PRJ_BILLING_REWORK",
+      "target": "PRJ_CORE_PLATFORM",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "REST",
+        "description": "Billing requiere catálogo de clientes y reglas del Core",
+        "latency_ms": 120
+      }
+    },
+    {
+      "id": "REL_5",
+      "source": "PRJ_PAYMENTS_UPGRADE",
+      "target": "PRJ_BILLING_REWORK",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "REST",
+        "description": "Pagos reporta transacciones y conciliación hacia Billing",
+        "latency_ms": 180
+      }
+    },
+    {
+      "id": "REL_6",
+      "source": "PRJ_FRAUD_DETECTION",
+      "target": "PRJ_PAYMENTS_UPGRADE",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "event_stream",
+        "description": "Fraude consume eventos de pagos para scoring en tiempo casi real"
+      }
+    },
+    {
+      "id": "REL_7",
+      "source": "PRJ_DWH_ANALYTICS",
+      "target": "PRJ_BILLING_REWORK",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "JDBC",
+        "description": "DWH ingesta datos de billing para modelos analíticos",
+        "schedule": "batch_nightly"
+      }
+    },
+    {
+      "id": "REL_8",
+      "source": "PRJ_DWH_ANALYTICS",
+      "target": "PRJ_CORE_PLATFORM",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "event_stream",
+        "description": "DWH consume eventos del Core para tracking y BI"
+      }
+    },
+    {
+      "id": "REL_9",
+      "source": "PRJ_REPORTING_SUITE",
+      "target": "PRJ_DWH_ANALYTICS",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "REST",
+        "description": "Reporting obtiene datasets consolidados desde el DWH"
+      }
+    },
+    {
+      "id": "REL_10",
+      "source": "PRJ_WEB_PORTAL_REDESIGN",
+      "target": "PRJ_REPORTING_SUITE",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "REST",
+        "description": "El portal dispara reportes on-demand"
+      }
+    },
+    {
+      "id": "REL_11",
+      "source": "PRJ_DEVOPS_OBSERVABILITY",
+      "target": "PRJ_CORE_PLATFORM",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "OTLP",
+        "description": "Observabilidad recolecta trazas/métricas del Core"
+      }
+    },
+    {
+      "id": "REL_12",
+      "source": "PRJ_DEVOPS_OBSERVABILITY",
+      "target": "PRJ_PAYMENTS_UPGRADE",
+      "label": "SERVICE_DEPENDENCY",
+      "direction": "outbound",
+      "metadata": {
+        "protocol": "OTLP",
+        "description": "Observabilidad recolecta trazas/métricas del motor de pagos"
+      }
+    }
+  ]
+}

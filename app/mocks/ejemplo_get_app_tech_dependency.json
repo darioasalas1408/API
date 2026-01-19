@@ -1,0 +1,103 @@
+{
+  "app_id": "app_id",
+  "nodes": [
+    {
+      "id": "APP_BILLING",
+      "label": "Billing",
+      "type": "ApplicationComponent",
+      "domain": "Core",
+      "criticality": "high",
+      "metadata": {
+        "owner": "Equipo Core",
+        "layer": "Backoffice"
+      }
+    },
+    {
+      "id": "APP_PORTAL",
+      "label": "Portal Web",
+      "type": "ApplicationComponent",
+      "domain": "Front",
+      "criticality": "medium",
+      "metadata": {
+        "owner": "Equipo Digital",
+        "layer": "Customer Facing"
+      }
+    },
+
+    {
+      "id": "TECH_JAVA",
+      "label": "Java",
+      "type": "SystemSoftware",
+      "category": "language",
+      "metadata": {
+        "version": "17",
+        "lifecycle": "standard",
+        "risk":"HIGH"
+      }
+    },
+    {
+      "id": "TECH_REACT",
+      "label": "React",
+      "type": "SystemSoftware",
+      "category": "frontend_framework",
+      "metadata": {
+        "version": "18",
+        "lifecycle": "standard",
+        "risk":"LOW"
+      }
+    },
+    {
+      "id": "TECH_POSTGRES",
+      "label": "PostgreSQL",
+      "type": "TechnologyService",
+      "category": "database",
+      "metadata": {
+        "version": "15",
+        "lifecycle": "strategic",
+        "risk":"MEDIUM"
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "REL_APP_BILLING_JAVA",
+      "source": "APP_BILLING",
+      "target": "TECH_JAVA",
+      "label": "USES_TECH",
+      "metadata": {
+        "usage_type": "runtime",
+        "layer": "backend"
+      }
+    },
+    {
+      "id": "REL_APP_BILLING_POSTGRES",
+      "source": "APP_BILLING",
+      "target": "TECH_POSTGRES",
+      "label": "USES_TECH",
+      "metadata": {
+        "usage_type": "database",
+        "layer": "data"
+      }
+    },
+    {
+      "id": "REL_APP_PORTAL_REACT",
+      "source": "APP_PORTAL",
+      "target": "TECH_REACT",
+      "label": "USES_TECH",
+      "metadata": {
+        "usage_type": "frontend",
+        "layer": "ui"
+      }
+    },
+    {
+      "id": "REL_APP_PORTAL_JAVA",
+      "source": "APP_PORTAL",
+      "target": "TECH_JAVA",
+      "label": "USES_TECH",
+      "metadata": {
+        "usage_type": "backend",
+        "layer": "api"
+      }
+    }
+  ]
+}

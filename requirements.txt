@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+google-cloud-firestore
+passlib
+python-multipart
+pydantic
+pydantic-settings
+httpx
+google-cloud-logging>=3.10.0
+email-validator

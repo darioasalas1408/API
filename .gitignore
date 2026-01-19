@@ -1,0 +1,5 @@
+code_environment/
+secrets/
+*__pycache__*
+__pycache__/
+**/__pycache__/

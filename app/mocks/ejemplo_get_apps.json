@@ -1,0 +1,102 @@
+{
+    "project":{
+        "id":123456,
+        "name":"Ejemplo de project"
+    },
+    "applications":[
+        {
+            "id":"27fb7faf-5fb0-4013-8907-772883714c18",
+            "name":"DODE",
+            "description":"Aplicacion de DODE",
+            "repos":[
+                {
+                    "module":{
+                        "name":"Utilization Calculator",
+                        "description":"Aplicacion de calculo de utilizacion"
+                    },
+                    "repo_url":"https://gitlab.com/ingeniaca/dode/utilization-calculator.git",
+                    "repo_branch":"main",
+                    "analysis_history":{
+                        "last":"27fb7faf-5fb0-4013-8907-772883714c14",
+                        "full_history":[
+                            {
+                                "date":"2025-11-01",
+                                "id":"27fb7faf-5fb0-4013-8907-772883714c14"
+                            },
+                            {
+                                "date":"2025-10-30",
+                                "id":"27fb7faf-5faa-4013-8907-772883714c15"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id":"27fb7faf-5fb0-4013-8907-772883714c84",
+            "name":"Ingenia Web",
+            "description":"La web de ingenia",
+            "repos":[
+                {
+                    "module":{
+                        "name":"Frontend",
+                        "description":"El front"
+                    },
+                    "repo_url":"https://gitlab.com/ingeniaca/ingeniaweb/frontend.git",
+                    "repo_branch":"main",
+                    "analysis_history":{
+                        "last":"27fb7faf-5fb0-4013-8907-772883714c14",
+                        "full_history":[
+                            {
+                                "date":"2025-11-01",
+                                "id":"27fb7faf-5fb0-4013-8907-772883714c14"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "module":{
+                        "name":"Strapi CMS",
+                        "description":"El CMS"
+                    },
+                    "repo_url":"https://gitlab.com/ingeniaca/ingeniaweb/strapi-cms.git",
+                    "repo_branch":"main",
+                    "analysis_history":{
+                        "last":"27fb7faf-5fb0-4013-8907-772883714d14",
+                        "full_history":[
+                            {
+                                "date":"2025-11-01",
+                                "id":"27fb7faf-5fb0-4013-8907-772883714d14"
+                            },
+                            {
+                                "date":"2025-09-01",
+                                "id":"27fb7fae-5fb0-4013-8907-772883714d14"
+                            },
+                            {
+                                "date":"2024-11-01",
+                                "id":"27fb8faf-5fb0-4013-8907-772883714d14"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "module":{
+                        "name":"Backend",
+                        "description":"El back"
+                    },
+                    "repo_url":"https://gitlab.com/ingeniaca/ingeniaweb/backend.git",
+                    "repo_branch":"main",
+                    "analysis_history":{
+                        "last":"8f763047-0ad9-4c94-af16-4c6caf5069e4",
+                        "full_history":[
+                            {
+                                "date":"2025-11-01",
+                                "id":"8f763047-0ad9-4c94-af16-4c6caf5069e4"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
