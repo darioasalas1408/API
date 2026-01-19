@@ -1,3 +1,4 @@
+from __future__ import annotations
 from uuid import UUID, uuid4
 from urllib.parse import urlparse
 from pydantic import BaseModel, Field
