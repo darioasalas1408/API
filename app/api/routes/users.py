@@ -15,7 +15,10 @@ router = APIRouter(
 
 
 def _svc(request: Request) -> UsersService:
-    return UsersService(request.app.state.settings, request.app.state.logger)
+    svc = request.app.state.users_service
+    if svc is None:
+        raise HTTPException(status_code=503, detail="Firestore no está configurado. Configurá credenciales de GCP en Vercel.")
+    return svc
 
 
 @router.get("/users", response_model=list[UserReadModel])

@@ -20,6 +20,8 @@ def get_services(request: Request) -> tuple[Settings, AppsService]:
     """
     settings: Settings = request.app.state.settings
     apps_service: AppsService = request.app.state.apps_service
+    if apps_service is None:
+        raise HTTPException(status_code=503, detail="Firestore no está configurado. Configurá credenciales de GCP en Vercel.")
     return settings, apps_service
 
 @router.post(

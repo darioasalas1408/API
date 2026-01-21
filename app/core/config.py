@@ -1,4 +1,6 @@
 import os
+import tempfile
+import base64
 import configparser
 from functools import lru_cache
 from dataclasses import dataclass
@@ -28,6 +30,36 @@ def get_settings() -> Settings:
 
     cfg = configparser.ConfigParser()
     cfg.read(config_path)
+    # -------------------------------------------------------------------------
+    # Credenciales GCP en Vercel
+    #
+    # Recomendado:
+    # - GOOGLE_APPLICATION_CREDENTIALS_JSON: JSON del Service Account (texto)
+    # Alternativa:
+    # - GOOGLE_APPLICATION_CREDENTIALS_JSON_B64: el mismo JSON pero en Base64
+    #
+    # La app vuelca el JSON a /tmp y setea GOOGLE_APPLICATION_CREDENTIALS para usar ADC.
+    # -------------------------------------------------------------------------
+    creds_json = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON")
+
+    creds_b64 = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON_B64")
+    if (not creds_json) and creds_b64:
+        try:
+            creds_json = base64.b64decode(creds_b64).decode("utf-8")
+        except Exception:
+            creds_json = None
+
+    if creds_json and not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
+        tmp_path = os.path.join(tempfile.gettempdir(), "gcp_credentials.json")
+        try:
+            if (not os.path.exists(tmp_path)) or (open(tmp_path, "r", encoding="utf-8").read() != creds_json):
+                with open(tmp_path, "w", encoding="utf-8") as f:
+                    f.write(creds_json)
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = tmp_path
+        except Exception:
+            # Si falla (muy raro), dejamos que la app siga y caiga con un error claro al usar GCP
+            pass
+
 
     # -------------------------------------------------------------------------
     # GOOGLE_APPLICATION_CREDENTIALS

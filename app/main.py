@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from google.auth.exceptions import DefaultCredentialsError
 
 from app.api.routes import applications, projects, health, mocks, auth
 from app.core.config import get_settings
@@ -30,10 +31,19 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    firestore = get_firestore_client(
-    project=settings.gcp_project,
-    database=settings.firestore_db,
-    )
+    try:
+        firestore = get_firestore_client(
+            project=settings.gcp_project,
+            database=settings.firestore_db,
+        )
+    except DefaultCredentialsError as e:
+        firestore = None
+        logger.warning(
+            "No se pudieron cargar credenciales de GCP (ADC). "
+            "En Vercel, seteá GOOGLE_APPLICATION_CREDENTIALS_JSON (o GOOGLE_APPLICATION_CREDENTIALS). "
+            f"Motivo: {e}"
+        )
+
     app.state.firestore = firestore
 
     # Settings & logger
@@ -41,8 +51,14 @@ def create_app() -> FastAPI:
     app.state.logger = logger
 
     # Services
-    app.state.projects_service = ProjectsService(settings, logger)
-    app.state.apps_service = AppsService(settings, logger)
+    # Services (si no hay Firestore, quedan deshabilitados y los endpoints devolverán 503)
+    app.state.projects_service = ProjectsService(firestore, settings, logger) if firestore else None
+    app.state.apps_service = AppsService(firestore, settings, logger) if firestore else None
+    app.state.users_service = None
+    if firestore:
+        from app.services.user_services import UsersService
+        app.state.users_service = UsersService(firestore, settings, logger)
+
 
     # Routers
     app.include_router(auth.router)

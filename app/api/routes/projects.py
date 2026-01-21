@@ -25,6 +25,8 @@ class ProjectUpdateRequest(BaseModel):
 def get_services(request: Request) -> tuple[Settings, ProjectsService]:
     settings: Settings = request.app.state.settings
     projects_service: ProjectsService = request.app.state.projects_service
+    if projects_service is None:
+        raise HTTPException(status_code=503, detail="Firestore no está configurado. Configurá credenciales de GCP en Vercel.")
     return settings, projects_service
 
 

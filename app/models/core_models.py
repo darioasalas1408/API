@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from uuid import UUID, uuid4
 from urllib.parse import urlparse
 from pydantic import BaseModel, Field
@@ -32,6 +30,11 @@ class Module(BaseModel):
     code_analysis_history: list[AnalysisHistoryItem] = Field(default_factory=list)
     functional_analysis_history: list[AnalysisHistoryItem] = Field(default_factory=list)
 
+class Summary(BaseModel):
+    modules: int = 0
+    externalsystems: int = 0
+    technologies: int = 0
+
 class Application(BaseModel):
     project_id: str # uuid-4
     id: str = Field(default_factory=lambda: str(uuid4())) # uuid-4
@@ -53,8 +56,3 @@ class Project(BaseModel):
     def __init__(self, **data):
         super().__init__(**data)
         UUID(self.id, version=4)
-
-class Summary(BaseModel):
-    modules: int = 0
-    externalsystems: int = 0
-    technologies: int = 0

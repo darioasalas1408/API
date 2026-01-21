@@ -1,0 +1,6 @@
+# Evita subir archivos innecesarios / sensibles
+secrets/
+.venv/
+**/__pycache__/
+**/*.pyc
+.DS_Store

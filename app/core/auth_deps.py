@@ -9,6 +9,8 @@ from app.services.auth_service import AuthService
 def get_auth_service(request: Request) -> AuthService:
     settings = request.app.state.settings
     db = request.app.state.firestore
+    if db is None:
+        raise HTTPException(status_code=503, detail="Firestore no está configurado. Configurá credenciales de GCP en Vercel.")
     return AuthService(db, session_ttl_hours=settings.session_ttl_hours)
 
 
