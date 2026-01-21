@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from fastapi import Depends, HTTPException, Request
 
-from services.auth_service import AuthService
+from app.services.auth_service import AuthService
 
 
 def get_auth_service(request: Request) -> AuthService:

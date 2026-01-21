@@ -6,8 +6,8 @@ import logging
 import uuid
 from google.cloud import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
-from models.core_models import Application, Module, Repo
-from core.config import Settings
+from app.models.core_models import Application, Module, Repo
+from app.core.config import Settings
 
 class AppsService:
     """Administra la persistencia y consulta del estado de jobs en Firestore."""

@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import applications, projects, health, mocks, auth
-from core.config import get_settings
-from core.logging import get_logger
-from core.firestore import get_firestore_client
+from app.api.routes import applications, projects, health, mocks, auth
+from app.core.config import get_settings
+from app.core.logging import get_logger
+from app.core.firestore import get_firestore_client
 
-from services.project_services import ProjectsService
-from services.apps_services import AppsService
-from api.routes import users
+from app.services.project_services import ProjectsService
+from app.services.apps_services import AppsService
+from app.api.routes import users
 
 
 def create_app() -> FastAPI:

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 
-from core.auth_deps import get_current_user
-from models.auth_models import LoginRequest, LoginResponse, MeResponse
-from services.auth_service import AuthService
+from app.core.auth_deps import get_current_user
+from app.models.auth_models import LoginRequest, LoginResponse, MeResponse
+from app.services.auth_service import AuthService
 
 
 router = APIRouter(prefix="/auth", tags=["Auth"])

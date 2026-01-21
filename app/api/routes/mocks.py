@@ -2,8 +2,8 @@ import uuid
 import hashlib
 from typing import Dict
 from fastapi import APIRouter, Header, Request, HTTPException
-from models.core_models import Project, Application, Module, Repo
-from utils.mocking import load_mock  # Para pruebas locales
+from app.models.core_models import Project, Application, Module, Repo
+from app.utils.mocking import load_mock  # Para pruebas locales
 
 router = APIRouter(prefix="", tags=["mock_analysis"])
 

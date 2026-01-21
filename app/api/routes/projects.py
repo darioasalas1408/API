@@ -2,12 +2,12 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
 
-from models.core_models import Project
-from core.config import Settings
-from services.project_services import ProjectsService
-from core.auth_deps import get_current_user
-from models.project_responses import ProjectWithUserResponse
-from utils.mocking import load_mock  # Para pruebas locales
+from app.models.core_models import Project
+from app.core.config import Settings
+from app.services.project_services import ProjectsService
+from app.core.auth_deps import get_current_user
+from app.models.project_responses import ProjectWithUserResponse
+from app.utils.mocking import load_mock  # Para pruebas locales
 
 
 router = APIRouter(

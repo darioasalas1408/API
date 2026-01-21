@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from models.core_models import Project
+from app.models.core_models import Project
 
 
 class ProjectWithUserResponse(BaseModel):

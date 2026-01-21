@@ -3,9 +3,9 @@ import logging
 from typing import List, Optional, Tuple
 
 from google.cloud import firestore
-from models.core_models import Project
-from core.config import Settings
-from models.project_responses import ProjectWithUserResponse
+from app.models.core_models import Project
+from app.core.config import Settings
+from app.models.project_responses import ProjectWithUserResponse
 
 
 class ProjectsService:

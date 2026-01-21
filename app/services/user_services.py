@@ -6,8 +6,8 @@ from typing import Any, Optional
 
 from google.cloud import firestore
 
-from core.config import Settings
-from models.user_crud_models import UserCreateRequest, UserReadModel, UserUpdateRequest
+from app.core.config import Settings
+from app.models.user_crud_models import UserCreateRequest, UserReadModel, UserUpdateRequest
 
 
 try:

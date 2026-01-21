@@ -1,5 +1,5 @@
 import logging
-from core.config import Settings
+from app.core.config import Settings
 
 def get_logger(settings: Settings) -> logging.Logger:
     """Configura y devuelve el logger principal según el entorno.

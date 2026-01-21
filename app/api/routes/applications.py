@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
-from models.core_models import Application, Module, Repo
-from core.config import get_settings, Settings
-from services.apps_services import AppsService
-from utils.mocking import load_mock  # Para pruebas locales
-from core.auth_deps import get_current_user
+from app.models.core_models import Application, Module, Repo
+from app.core.config import get_settings, Settings
+from app.services.apps_services import AppsService
+from app.utils.mocking import load_mock  # Para pruebas locales
+from app.core.auth_deps import get_current_user
 
 router = APIRouter(
     dependencies=[Depends(get_current_user)],

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 
-from core.auth_deps import require_admin
-from models.user_crud_models import UserCreateRequest, UserReadModel, UserUpdateRequest
-from services.user_services import UsersService
+from app.core.auth_deps import require_admin
+from app.models.user_crud_models import UserCreateRequest, UserReadModel, UserUpdateRequest
+from app.services.user_services import UsersService
 
 
 router = APIRouter(
